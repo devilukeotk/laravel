@@ -12,6 +12,11 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
+    <style>
+        .table-linkable > tbody > tr {
+            cursor: pointer;
+        }
+    </style>
 
     <!-- Scripts -->
     <script>
@@ -19,6 +24,7 @@
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
+
 </head>
 <body>
     <div id="app">
