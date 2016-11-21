@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Topic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class TopicController extends Controller
 {
@@ -25,7 +27,11 @@ class TopicController extends Controller
      */
     public function create()
     {
-        //
+        if (Auth::guest()) {
+            App::abort(403, 'Unauthorized action.');
+        }
+
+        return view('topic/create');
     }
 
     /**
@@ -36,7 +42,14 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Auth::guest()) {
+            App::abort(403, 'Unauthorized action.');
+        }
+
+        $topic = new Topic($request->all());
+        $topic->user()->associate(Auth::user());
+        $topic->save();
+        return redirect('/');
     }
 
     /**
