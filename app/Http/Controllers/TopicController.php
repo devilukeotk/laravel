@@ -17,7 +17,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $topics = Topic::all();
+        $topics = Topic::orderBy('created_at', 'desc')->get();
         return view('topic.index')->withTopics($topics);
     }
 
@@ -62,7 +62,7 @@ class TopicController extends Controller
     public function show($id)
     {
         $topic = Topic::findOrfail($id);
-        $comments = $topic->comments;
+        $comments = $topic->comments->sortBy('created_at');
         return view('topic.show')
             ->withTopic($topic)
             ->withComments($comments);
