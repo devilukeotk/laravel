@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -65,6 +66,27 @@ class TopicController extends Controller
         return view('topic.show')
             ->withTopic($topic)
             ->withComments($comments);
+    }
+
+    /**
+     * Store a newly created comment in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function comment($id, Request $request)
+    {
+        if (Auth::guest()) {
+            App::abort(403, 'Unauthorized action.');
+        }
+
+        $topic = Topic::findOrFail($id);
+
+        $comment = new Comment($request->all());
+        $comment->topic()->associate($topic);
+        $comment->user()->associate(Auth::user());
+        $comment->save();
+        return redirect('/topic/' . $id);
     }
 
     /**
