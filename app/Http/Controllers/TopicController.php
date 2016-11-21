@@ -60,7 +60,11 @@ class TopicController extends Controller
      */
     public function show($id)
     {
-        //
+        $topic = Topic::findOrfail($id);
+        $comments = $topic->comments;
+        return view('topic.show')
+            ->withTopic($topic)
+            ->withComments($comments);
     }
 
     /**
